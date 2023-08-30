@@ -20,6 +20,7 @@ public class CatERing {
     private RecipeManager recipeMgr;
     private UserManager userMgr;
     private EventManager eventMgr;
+    private ShiftManager shiftMgr;
 
     private MenuPersistence menuPersistence;
 
@@ -28,6 +29,7 @@ public class CatERing {
         recipeMgr = new RecipeManager();
         userMgr = new UserManager();
         eventMgr = new EventManager();
+        shiftMgr = new ShiftManager();
         menuPersistence = new MenuPersistence();
         menuMgr.addEventReceiver(menuPersistence);
     }
@@ -43,6 +45,10 @@ public class CatERing {
 
     public UserManager getUserManager() {
         return userMgr;
+    }
+    
+    public ShiftManager getShiftManager(){
+        return shiftMgr;
     }
 
     public EventManager getEventManager() { return eventMgr; }
