@@ -2,6 +2,7 @@ package catering.businesslogic.event;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import catering.businesslogic.kitchenTask.SummarySheet;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
@@ -17,11 +18,20 @@ public class ServiceInfo implements EventItemInfo {
     private Time timeStart;
     private Time timeEnd;
     private int participants;
+    
+    private SummarySheet sheet;
 
     public ServiceInfo(String name) {
         this.name = name;
     }
 
+    public SummarySheet getSheet() {
+        return sheet;
+    }
+
+    public void setSheet(SummarySheet sheet){
+        this.sheet = sheet;
+    }
 
     public String toString() {
         return name + ": " + date + " (" + timeStart + "-" + timeEnd + "), " + participants + " pp.";

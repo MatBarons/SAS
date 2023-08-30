@@ -3,6 +3,8 @@ package catering.businesslogic.user;
 import javafx.collections.FXCollections;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
+import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.shift.KitchenShift;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +30,21 @@ public class User {
 
     public boolean isChef() {
         return roles.contains(Role.CHEF);
+    }
+
+    public boolean isOrganizer(){
+        return roles.contains(Role.ORGANIZZATORE);
+    }
+
+    public boolean isCook(){
+        return roles.contains(Role.CUOCO);
+    }
+
+    public boolean isAvailable(KitchenShift shift) throws UseCaseLogicException{
+        if(!roles.contains(Role.CUOCO)){
+            throw new UseCaseLogicException();
+        }
+        return true;
     }
 
     public String getUserName() {
