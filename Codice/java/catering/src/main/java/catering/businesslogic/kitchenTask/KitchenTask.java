@@ -4,7 +4,7 @@ import catering.businesslogic.recipe.Procedure;
 import catering.businesslogic.shift.KitchenShift;
 import catering.businesslogic.user.User;
 
-class KitchenTask{
+public class KitchenTask{
 
     private int estimatedTime;
     private String quantity;

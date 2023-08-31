@@ -21,7 +21,7 @@ public class SummarySheet{
         tasks.add(task);
     }
 
-    public void moveTask(int position,KitchenTask task){
+    public void changeTaskPosition(int position,KitchenTask task){
         tasks.remove(task);
         tasks.add(position,task);
     }
@@ -49,7 +49,10 @@ public class SummarySheet{
 
     }
 
-    public void editTask(KitchenTask task,Optional<Integer> time,Optional<String> quantity){
+    public void editTask(KitchenTask task,Optional<Integer> time,Optional<String> quantity,Optional<Boolean> completed){
+        if(completed != null){
+            task.setCompleted(completed.get());
+        }
         if(time != null){
             task.setEstimatedTime(time.get());
         }
@@ -59,14 +62,16 @@ public class SummarySheet{
     }
 
     public void cancelTask(KitchenTask task) throws UseCaseLogicException{
-        if(task.isCompleted() && !task.isToDo()){
+        if(task.isCompleted() || !task.isToDo()){
             throw new UseCaseLogicException();   
         }
         task.setToDo(false);
+        task.setCook(null);
+        task.setShift(null);
     }
 
     public void removeTask(KitchenTask task) throws UseCaseLogicException{
-        if(task.isCompleted() && task.isToDo()){
+        if(task.isCompleted() || !task.isToDo()){
             throw new UseCaseLogicException();   
         }
         tasks.remove(task);

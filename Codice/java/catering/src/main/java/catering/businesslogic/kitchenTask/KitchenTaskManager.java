@@ -5,14 +5,17 @@ import java.util.Optional;
 
 import catering.businesslogic.CatERing;
 import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.recipe.Procedure;
 import catering.businesslogic.recipe.Recipe;
 import catering.businesslogic.shift.KitchenShift;
 import catering.businesslogic.shift.ShiftManager;
 import catering.businesslogic.user.User;
+import javafx.collections.ObservableList;
 
 public class KitchenTaskManager{
     private SummarySheet currentSheet;
     private ArrayList<KitchenTaskEventReceiver> eventReceivers;
+
     public KitchenTaskManager(){
         this.eventReceivers = new ArrayList<>();
     }
@@ -50,8 +53,8 @@ public class KitchenTaskManager{
     }
 
 
-    public void insertTask(Recipe rec){
-        KitchenTask task = new KitchenTask(rec);
+    public void insertTask(Procedure proc){
+        KitchenTask task = new KitchenTask(proc);
         currentSheet.addTask(task);
         notifyInsertedTask(currentSheet,task);
     }
@@ -60,12 +63,12 @@ public class KitchenTaskManager{
         if(position >= currentSheet.getTasks().size() || position < 0){
             throw new IllegalArgumentException();
         }
-        currentSheet.moveTask(position,task);
+        currentSheet.changeTaskPosition(position,task);
         notifyRearrangedSheet(currentSheet);
     }
 
     public ArrayList<KitchenShift> getShiftBoard(int serviceID){
-        return ShiftManager.getShiftBoard(serviceID);
+        return CatERing.getInstance().getShiftManager().getShiftBoard(serviceID);
     }
 
     public void assignTask(KitchenTask task,Optional<KitchenShift> shift,Optional<User> cook,Optional<Integer> time,Optional<String> quantity) throws UseCaseLogicException{
@@ -76,11 +79,11 @@ public class KitchenTaskManager{
         notifyAssignedTask(currentSheet, task);
     }
 
-    public void editTask(KitchenTask task,Optional<Integer> time,Optional<String> quantity) throws UseCaseLogicException{
+    public void editTask(KitchenTask task,Optional<Integer> time,Optional<String> quantity,Optional<Boolean> completed) throws UseCaseLogicException{
         if(!currentSheet.getTasks().contains(task)){
             throw new UseCaseLogicException();
         }
-        currentSheet.editTask(task, time, quantity);
+        currentSheet.editTask(task, time, quantity,completed);
         notifyEditedTask(currentSheet, task);
     }
 
@@ -104,6 +107,16 @@ public class KitchenTaskManager{
 
 
     //NOTIFIERS
+
+    public void addReceiver(KitchenTaskEventReceiver e){
+        eventReceivers.add(e);
+    }
+
+    public void removeReceiver(KitchenTaskEventReceiver e){
+        eventReceivers.remove(e);
+    }
+
+
     private void notifySheetGenerated(SummarySheet sheet) {
         for (KitchenTaskEventReceiver eventReceiver : eventReceivers) {
             eventReceiver.updateSheetGenerated(sheet);

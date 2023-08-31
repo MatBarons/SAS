@@ -1,12 +1,13 @@
 package catering.businesslogic.shift;
 
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
+
 
 public class ShiftManager{
 
-    private ObservableList<Shift> shiftBoard;
+    private ArrayList<Shift> shiftBoard;
 
-    public ObservableList<Shift> getShiftBoard(int serviceID){
+    public ArrayList<Shift> getShiftBoard(int serviceID){
         return shiftBoard;
     }
 }

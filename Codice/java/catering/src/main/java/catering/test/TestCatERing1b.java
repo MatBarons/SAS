@@ -1,8 +1,8 @@
-package catering;
+package catering.test;
 import catering.businesslogic.CatERing;
 import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.event.EventInfo;
-import catering.businesslogic.event.ServiceInfo;
+import catering.businesslogic.event.Service;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.MenuException;
 import catering.businesslogic.menu.Section;

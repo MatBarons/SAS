@@ -21,6 +21,7 @@ public class User {
     private int id;
     private String username;
     private Set<Role> roles;
+    private String activity;
 
     public User() {
         id = 0;
@@ -53,6 +54,14 @@ public class User {
 
     public int getId() {
         return this.id;
+    }
+
+    public String getActivity(){
+        return activity;
+    }
+
+    public void setActivity(String act){
+        this.activity = act;
     }
 
     public String toString() {

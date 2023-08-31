@@ -3,7 +3,7 @@ package catering.businesslogic.shift;
 import java.time.Instant;
 import java.time.Duration;
 
-abstract class Shift{
+class Shift{
 
     Instant start;
     Instant end;
