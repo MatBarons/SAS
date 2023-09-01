@@ -3,6 +3,7 @@ package catering.businesslogic.event;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.event.Enumerations.EventStatus;
@@ -13,7 +14,7 @@ import javafx.collections.ObservableList;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
-public class Event{
+public class Event {
     private int id;
     private String name;
     private String client;
@@ -26,17 +27,16 @@ public class Event{
     private int numServices;
     private String notes;
     private String docs;
-    
+
     private ObservableList<Service> services;
 
-    public Event(String name, LocalDate dateStart, LocalDate dateEnd,String client,User organizer) {
+    public Event(String name, LocalDate dateStart, LocalDate dateEnd, String client, User organizer) {
         this.name = name;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.client = client;
         this.status = EventStatus.PROGRAMMATO;
     }
-
 
     public int getId() {
         return id;
@@ -94,11 +94,11 @@ public class Event{
         this.organizer = organizer;
     }
 
-    public User getChef(){
+    public User getChef() {
         return chef;
     }
 
-    public void setChef(User chef){
+    public void setChef(User chef) {
         this.chef = chef;
     }
 
@@ -138,8 +138,6 @@ public class Event{
         this.services = services;
     }
 
-
-
     public ObservableList<Service> getServices() {
         return FXCollections.unmodifiableObservableList(this.services);
     }
@@ -148,19 +146,18 @@ public class Event{
         return name + ": " + dateStart + "-" + dateEnd + ", " + participants + " pp. (" + organizer.getUserName() + ")";
     }
 
-
-    public void cancelEvent(String notes,String docs) throws UseCaseLogicException{
+    public void cancelEvent(String notes, String docs) throws UseCaseLogicException {
         this.notes = notes;
         this.docs = docs;
         this.status = EventStatus.ANNULLATO;
-        
-        for(Service s : services){
+
+        for (Service s : services) {
             s.cancelService();
         }
-        
+
     }
 
-    public void assignStaff(Service service,User newStaff) throws UseCaseLogicException{
+    public void assignStaff(Service service, User newStaff) throws UseCaseLogicException {
         service.addStaff(newStaff);
     }
 
@@ -175,11 +172,11 @@ public class Event{
                 String n = rs.getString("name");
                 LocalDate dateStart = rs.getDate("date_start").toLocalDate();
                 LocalDate dateEnd = rs.getDate("date_end").toLocalDate();
-                String client =  rs.getString("client");
+                String client = rs.getString("client");
                 int org = rs.getInt("organizer_id");
                 User organizer = User.loadUserById(org);
-                Event e = new Event(n,dateStart,dateEnd,client,organizer);
-                
+                Event e = new Event(n, dateStart, dateEnd, client, organizer);
+
                 e.id = rs.getInt("id");
                 e.participants = rs.getInt("expected_participants");
                 e.numServices = rs.getInt("num_services");
@@ -192,5 +189,29 @@ public class Event{
             e.services = Service.loadServiceInfoForEvent(e.id);
         }
         return all;
+    }
+
+    public static Event loadEventByID(int ID) {
+        Event event = new Event(null, null, null, null, null);
+        String query = "SELECT * FROM Events WHERE id = " + ID;
+        PersistenceManager.executeQuery(query, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                event.name = rs.getString("name");
+                event.dateStart = rs.getDate("date_start").toLocalDate();
+                event.dateEnd = rs.getDate("date_end").toLocalDate();
+                event.client = rs.getString("client");
+                int org = rs.getInt("organizer_id");
+                event.organizer = User.loadUserById(org);
+                event.id = rs.getInt("id");
+                event.participants = rs.getInt("expected_participants");
+                event.numServices = rs.getInt("num_services");
+                event.notes = rs.getString("notes");
+            }
+        });
+        
+        event.services = Service.loadServiceInfoForEvent(event.id);
+
+        return event;
     }
 }

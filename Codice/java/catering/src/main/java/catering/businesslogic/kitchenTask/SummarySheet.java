@@ -1,16 +1,33 @@
 package catering.businesslogic.kitchenTask;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.event.Event;
+import catering.businesslogic.event.Service;
 import catering.businesslogic.shift.KitchenShift;
 import catering.businesslogic.user.User;
+import catering.persistence.BatchUpdateHandler;
+import catering.persistence.PersistenceManager;
 
 public class SummarySheet{
-
+    
+    private int ID;
     private ArrayList<KitchenTask> tasks;
+    
     public SummarySheet() {
         this.tasks = new ArrayList<>();
+    }
+
+    public int getID(){
+        return ID;
+    }
+
+    public void setID(int ID){
+        this.ID = ID;
     }
 
     public ArrayList<KitchenTask> getTasks() {
@@ -75,5 +92,56 @@ public class SummarySheet{
             throw new UseCaseLogicException();   
         }
         tasks.remove(task);
+    }
+
+    @Override
+    public String toString() {
+        return "SummarySheet [tasks=" + tasks + "]";
+    }
+
+	public static void saveNewSummarySheet(Event event, Service service) {
+        String summarySheetInsert = "INSERT INTO catering.SummarySheets (owner_id, service_id) VALUES (?, ?);";
+        SummarySheet sheet;
+        try {
+            sheet = service.getSheet();
+        } catch (UseCaseLogicException e) {
+            e.printStackTrace();
+            return;
+        }
+        int[] result = PersistenceManager.executeBatchUpdate(summarySheetInsert, 1, new BatchUpdateHandler() {
+           
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                ps.setInt(1, event.getChef().getId());
+                ps.setInt(2, service.getId());
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException{
+                if (count == 0) {
+                    sheet.setID(rs.getInt(1));
+                }
+            }
+        });
+        if (result[0] > 0) {
+            if (sheet.getTasks().size() > 0) {
+                KitchenTask.saveAllNewTasks(sheet.getID(), sheet.getTasks());
+            }
+        }
+	}
+
+    public static void saveTaskOrder(SummarySheet sheet) {
+        String upd = "UPDATE KitchenTasks SET position = ? WHERE id = ?";
+        PersistenceManager.executeBatchUpdate(upd, sheet.tasks.size(), new BatchUpdateHandler() {
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                ps.setInt(1, batchCount);
+                ps.setInt(2, sheet.tasks.get(batchCount).getID());
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
+            }
+        });
     }
 }

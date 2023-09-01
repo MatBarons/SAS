@@ -1,7 +1,10 @@
 package catering.businesslogic.kitchenTask;
 
-interface KitchenTaskEventReceiver{
-    public void updateSheetGenerated(SummarySheet sheet);
+import catering.businesslogic.event.Service;
+import catering.businesslogic.event.Event;
+
+public interface KitchenTaskEventReceiver{
+    public void updateSheetGenerated(Event event,Service service);
     public void updateInsertedTask(SummarySheet sheet,KitchenTask task);
     public void updateRearrangedSheet(SummarySheet sheet);
     public void updateAssignedTask(SummarySheet sheet,KitchenTask task);

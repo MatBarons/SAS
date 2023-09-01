@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import catering.businesslogic.CatERing;
 import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.event.Event;
+import catering.businesslogic.event.Service;
 import catering.businesslogic.recipe.Procedure;
 import catering.businesslogic.recipe.Recipe;
 import catering.businesslogic.shift.KitchenShift;
-import catering.businesslogic.shift.ShiftManager;
 import catering.businesslogic.user.User;
-import javafx.collections.ObservableList;
 
 public class KitchenTaskManager{
     private SummarySheet currentSheet;
@@ -32,11 +32,11 @@ public class KitchenTaskManager{
     }
 
 
-    public SummarySheet generateSummarySheet(Event event,Service service){
+    public SummarySheet generateSummarySheet(Event event,Service service) throws UseCaseLogicException{
 
         User user = CatERing.getInstance().getUserManager().getCurrentUser();
 
-        if (!user.isChef() || !event.getAssignedChef().equals(user) || !event.containsService(service) || !service.isConfirmed()) {
+        if (!user.isChef() || !event.getChef().equals(user) || !event.getServices().contains(service) || !service.isConfirmed()) {
             throw new UseCaseLogicException();
         }
 
@@ -48,15 +48,16 @@ public class KitchenTaskManager{
         }
         service.setSheet(sheet);
         setCurrentSummarySheet(sheet);
-        notifySheetGenerated(sheet);
+        notifySheetGenerated(event,service);
         return currentSheet;
     }
 
 
-    public void insertTask(Procedure proc){
+    public KitchenTask insertTask(Procedure proc){
         KitchenTask task = new KitchenTask(proc);
         currentSheet.addTask(task);
         notifyInsertedTask(currentSheet,task);
+        return task;
     }
 
     public void changeTaskPosition(int position,KitchenTask task){
@@ -67,8 +68,8 @@ public class KitchenTaskManager{
         notifyRearrangedSheet(currentSheet);
     }
 
-    public ArrayList<KitchenShift> getShiftBoard(int serviceID){
-        return CatERing.getInstance().getShiftManager().getShiftBoard(serviceID);
+    public ArrayList<KitchenShift> getKitchenShiftBoard(int serviceID){
+        return CatERing.getInstance().getShiftManager().getKitchenShiftBoard(serviceID);
     }
 
     public void assignTask(KitchenTask task,Optional<KitchenShift> shift,Optional<User> cook,Optional<Integer> time,Optional<String> quantity) throws UseCaseLogicException{
@@ -117,9 +118,9 @@ public class KitchenTaskManager{
     }
 
 
-    private void notifySheetGenerated(SummarySheet sheet) {
+    private void notifySheetGenerated(Event event,Service service) {
         for (KitchenTaskEventReceiver eventReceiver : eventReceivers) {
-            eventReceiver.updateSheetGenerated(sheet);
+            eventReceiver.updateSheetGenerated(event,service);
         }
     }
 

@@ -2,6 +2,7 @@ package catering.businesslogic.recipe;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import catering.businesslogic.CatERing;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
@@ -10,50 +11,35 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Recipe extends Procedure{
-    private static Map<Integer, Recipe> all = new HashMap<>();
-
-    private int id;
 
     private Recipe() {
-
+        super();
     }
 
     public Recipe(String name) {
+        super();
         id = 0;
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String toString() {
-        return name;
-    }
-
-    // STATIC METHODS FOR PERSISTENCE
-
     public static ObservableList<Recipe> loadAllRecipes() {
-        String query = "SELECT * FROM Recipes";
+        String query = "SELECT * FROM Procedures WHERE type = 'recipe'";
+        ProcedureManager pm = CatERing.getInstance().getProcedureManager();
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
                 int id = rs.getInt("id");
-                if (all.containsKey(id)) {
-                    Recipe rec = all.get(id);
+                if (pm.getAll().containsKey(id)) {
+                    Recipe rec = pm.getAllRecipes().get(id);
                     rec.name = rs.getString("name");
                 } else {
                     Recipe rec = new Recipe(rs.getString("name"));
                     rec.id = id;
-                    all.put(rec.id, rec);
+                    pm.getAll().put(rec.id, rec);
                 }
             }
         });
-        ObservableList<Recipe> ret =  FXCollections.observableArrayList(all.values());
+        ObservableList<Recipe> ret =  FXCollections.observableArrayList(pm.getAllRecipes());
         Collections.sort(ret, new Comparator<Recipe>() {
             @Override
             public int compare(Recipe o1, Recipe o2) {
@@ -63,20 +49,17 @@ public class Recipe extends Procedure{
         return ret;
     }
 
-    public static ObservableList<Recipe> getAllRecipes() {
-        return FXCollections.observableArrayList(all.values());
-    }
-
     public static Recipe loadRecipeById(int id) {
-        if (all.containsKey(id)) return all.get(id);
+        ProcedureManager pm = CatERing.getInstance().getProcedureManager();
+        if (pm.getAll().containsKey(id)) return pm.getAllRecipes().get(id);
         Recipe rec = new Recipe();
-        String query = "SELECT * FROM Recipes WHERE id = " + id;
+        String query = "SELECT * FROM Procedures WHERE type = 'recipe' AND id = " + id;
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
                     rec.name = rs.getString("name");
                     rec.id = id;
-                    all.put(rec.id, rec);
+                    pm.getAll().put(rec.id, rec);
             }
         });
         return rec;

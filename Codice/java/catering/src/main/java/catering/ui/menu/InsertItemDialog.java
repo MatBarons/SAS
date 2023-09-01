@@ -2,6 +2,7 @@ package catering.ui.menu;
 
 import catering.businesslogic.CatERing;
 import catering.businesslogic.recipe.Recipe;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -33,7 +34,7 @@ public class InsertItemDialog {
     private boolean confirmed;
 
     public void initialize() {
-        recipeCombo.setItems(CatERing.getInstance().getRecipeManager().getRecipes());
+        recipeCombo.setItems(FXCollections.observableArrayList(CatERing.getInstance().getProcedureManager().getAllRecipes()));
         confirmed = false;
     }
 

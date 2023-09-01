@@ -20,6 +20,10 @@ public class EventManager {
         eventReceivers = new ArrayList<>();
     }
 
+    public Event getEventByID(int ID){
+        return Event.loadEventByID(ID);
+    }
+
     public ObservableList<Event> getEventInfo() {
         return Event.loadAllEventInfo();
     }

@@ -2,12 +2,12 @@ package catering.businesslogic.event;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import catering.businesslogic.CatERing;
+
 import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.event.Enumerations.ServiceStatus;
 import catering.businesslogic.kitchenTask.KitchenTask;
-import catering.businesslogic.kitchenTask.KitchenTaskManager;
 import catering.businesslogic.kitchenTask.SummarySheet;
+import catering.businesslogic.menu.Menu;
 import catering.businesslogic.user.User;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
@@ -27,6 +27,7 @@ public class Service{
     private int participants;
     private String place;
     private ServiceStatus status;
+    private Menu menu;
     
     private SummarySheet sheet;
     private ArrayList<User> staff;
@@ -100,7 +101,18 @@ public class Service{
         this.status = status;
     }
 
-    public SummarySheet getSheet() {
+    public Menu getMenu(){
+        return menu;
+    }
+
+    public void setMenu(Menu menu){
+        this.menu = menu;
+    }
+
+    public SummarySheet getSheet() throws UseCaseLogicException{
+        if(sheet == null){
+            throw new UseCaseLogicException();
+        }
         return sheet;
     }
 
@@ -114,6 +126,10 @@ public class Service{
 
     public void addStaff(User u) throws UseCaseLogicException{
         staff.add(u);
+    }
+
+    public boolean isConfirmed(){
+        return status == ServiceStatus.IN_CORSO;
     }
 
     public String toString() {

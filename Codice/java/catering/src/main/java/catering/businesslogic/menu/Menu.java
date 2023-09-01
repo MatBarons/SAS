@@ -133,7 +133,7 @@ public class Menu {
         this.sections.add(new Section("Secondi"));
         this.sections.add(new Section("Dessert"));
 
-        Recipe[] all = CatERing.getInstance().getRecipeManager().getRecipes().toArray(new Recipe[0]);
+        Recipe[] all = CatERing.getInstance().getProcedureManager().getAllRecipes().toArray(new Recipe[0]);
         freeItems.add(new MenuItem(all[3]));
         freeItems.add(new MenuItem(all[4]));
         freeItems.add(new MenuItem(all[5]));
@@ -249,6 +249,21 @@ public class Menu {
             if (s.getId() == id) return s;
         }
         return null;
+    }
+
+    public ArrayList<Recipe> getNeededRecipes(){
+
+        ArrayList<Recipe> recipes = new ArrayList<>();
+        for(Section s : sections){
+            for(MenuItem mi : s.getItems()){
+                recipes.add(mi.getItemRecipe());
+            }
+        }
+
+        for(MenuItem item : this.freeItems)
+            recipes.add(item.getItemRecipe());
+        
+        return recipes;
     }
 
 

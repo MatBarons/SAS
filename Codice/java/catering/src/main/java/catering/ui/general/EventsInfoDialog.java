@@ -1,8 +1,7 @@
 package catering.ui.general;
 
 import catering.businesslogic.CatERing;
-import catering.businesslogic.event.EventInfo;
-import catering.businesslogic.event.EventItemInfo;
+import catering.businesslogic.event.Event;
 import catering.businesslogic.event.Service;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,20 +14,20 @@ public class EventsInfoDialog {
     private Stage myStage;
 
     @FXML
-    TreeView<EventItemInfo> eventTree;
+    TreeView<Event> eventTree;
 
     public void initialize() {
-        ObservableList<EventInfo> all = CatERing.getInstance().getEventManager().getEventInfo();
+        ObservableList<Event> all = CatERing.getInstance().getEventManager().getEventInfo();
         eventTree.setShowRoot(false);
-        TreeItem<EventItemInfo> root = new TreeItem<>(null);
+        TreeItem<Event> root = new TreeItem<>(null);
 
-        for (EventInfo e: all) {
-            TreeItem<EventItemInfo> node = new TreeItem<>(e);
+        for (Event e: all) {
+            TreeItem<Event> node = new TreeItem<>(e);
             root.getChildren().add(node);
-            ObservableList<Service> serv = e.getServices();
-            for (Service s: serv) {
-                node.getChildren().add(new TreeItem<>(s));
-            }
+            // ObservableList<Service> serv = e.getServices();
+            // for (Service s: serv) {
+            //     node.getChildren().add(new TreeItem<Event>(s));
+            // }
         }
 
         eventTree.setRoot(root);
