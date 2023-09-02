@@ -1,4 +1,4 @@
-package catering.businesslogic.recipe;
+package catering.businesslogic.procedure;
 
 import java.util.HashMap;
 import java.util.Map;

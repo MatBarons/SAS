@@ -1,4 +1,4 @@
-package catering.businesslogic.recipe;
+package catering.businesslogic.procedure;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

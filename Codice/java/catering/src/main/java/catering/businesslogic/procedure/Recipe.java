@@ -1,4 +1,4 @@
-package catering.businesslogic.recipe;
+package catering.businesslogic.procedure;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
