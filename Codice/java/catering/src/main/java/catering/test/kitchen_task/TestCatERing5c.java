@@ -5,7 +5,7 @@ import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.event.Event;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.kitchenTask.KitchenTask;
-import catering.businesslogic.recipe.Procedure;
+import catering.businesslogic.procedure.Procedure;
 
 public class TestCatERing5c {
     public static void main(String[] args) {

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import catering.businesslogic.recipe.Procedure;
+import catering.businesslogic.procedure.Procedure;
 import catering.businesslogic.shift.KitchenShift;
 import catering.businesslogic.user.User;
 import catering.persistence.BatchUpdateHandler;

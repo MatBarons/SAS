@@ -7,8 +7,8 @@ import catering.businesslogic.CatERing;
 import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.event.Event;
 import catering.businesslogic.event.Service;
-import catering.businesslogic.recipe.Procedure;
-import catering.businesslogic.recipe.Recipe;
+import catering.businesslogic.procedure.Procedure;
+import catering.businesslogic.procedure.Recipe;
 import catering.businesslogic.shift.KitchenShift;
 import catering.businesslogic.user.User;
 
@@ -32,13 +32,18 @@ public class KitchenTaskManager{
     }
 
 
-    public SummarySheet generateSummarySheet(Event event,Service service) throws UseCaseLogicException{
+    public SummarySheet generateSummarySheet(Event event, Service service) throws UseCaseLogicException{
 
         User user = CatERing.getInstance().getUserManager().getCurrentUser();
 
-        if (!user.isChef() || !event.getChef().equals(user) || !event.getServices().contains(service) || !service.isConfirmed()) {
-            throw new UseCaseLogicException();
-        }
+        if (!user.isChef())
+            throw new UseCaseLogicException("L'utente autenticato non è uno CHEF");
+        if(!event.getChef().equals(user))
+            throw new UseCaseLogicException("L'utente autenticato non è lo CHEF dell'evento");
+        if(!event.getServices().contains(service))
+            throw new UseCaseLogicException("L'evento non contiene il servizio");
+        if(!service.isConfirmed())
+            throw new UseCaseLogicException("Il servizio non è CONFERMATO");
 
         ArrayList<Recipe> recipes = service.getMenu().getNeededRecipes();
         SummarySheet sheet = new SummarySheet();

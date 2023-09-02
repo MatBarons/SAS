@@ -1,6 +1,6 @@
 package catering.businesslogic.menu;
 
-import catering.businesslogic.recipe.Recipe;
+import catering.businesslogic.procedure.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import catering.persistence.BatchUpdateHandler;

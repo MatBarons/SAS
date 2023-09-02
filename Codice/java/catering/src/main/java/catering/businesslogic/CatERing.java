@@ -3,7 +3,7 @@ package catering.businesslogic;
 import catering.businesslogic.event.EventManager;
 import catering.businesslogic.kitchenTask.KitchenTaskManager;
 import catering.businesslogic.menu.MenuManager;
-import catering.businesslogic.recipe.ProcedureManager;
+import catering.businesslogic.procedure.ProcedureManager;
 import catering.businesslogic.shift.ShiftManager;
 import catering.businesslogic.user.UserManager;
 import catering.persistence.MenuPersistence;

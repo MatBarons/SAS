@@ -1,8 +1,5 @@
 package catering.businesslogic.event;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.event.Enumerations.ServiceStatus;
 import catering.businesslogic.kitchenTask.KitchenTask;
@@ -11,6 +8,8 @@ import catering.businesslogic.menu.Menu;
 import catering.businesslogic.user.User;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 
-public class Service{
+public class Service {
     private int id;
     private String name;
     private Date date;
@@ -28,7 +27,7 @@ public class Service{
     private String place;
     private ServiceStatus status;
     private Menu menu;
-    
+
     private SummarySheet sheet;
     private ArrayList<User> staff;
 
@@ -101,34 +100,34 @@ public class Service{
         this.status = status;
     }
 
-    public Menu getMenu(){
+    public Menu getMenu() {
         return menu;
     }
 
-    public void setMenu(Menu menu){
+    public void setMenu(Menu menu) {
         this.menu = menu;
     }
 
-    public SummarySheet getSheet() throws UseCaseLogicException{
-        if(sheet == null){
+    public SummarySheet getSheet() throws UseCaseLogicException {
+        if (sheet == null) {
             throw new UseCaseLogicException();
         }
         return sheet;
     }
 
-    public void setSheet(SummarySheet sheet){
+    public void setSheet(SummarySheet sheet) {
         this.sheet = sheet;
     }
 
-    public ArrayList<User> getStaff(){
+    public ArrayList<User> getStaff() {
         return staff;
     }
 
-    public void addStaff(User u) throws UseCaseLogicException{
+    public void addStaff(User u) {
         staff.add(u);
     }
 
-    public boolean isConfirmed(){
+    public boolean isConfirmed() {
         return status == ServiceStatus.IN_CORSO;
     }
 
@@ -137,9 +136,9 @@ public class Service{
     }
 
 
-    public void cancelService() throws UseCaseLogicException{
+    public void cancelService() throws UseCaseLogicException {
         this.status = ServiceStatus.ANNULLATO;
-        for(KitchenTask task : sheet.getTasks()){
+        for (KitchenTask task : sheet.getTasks()) {
             sheet.cancelTask(task);
         }
         staff.clear();
@@ -149,7 +148,7 @@ public class Service{
 
     public static ObservableList<Service> loadServiceInfoForEvent(int event_id) {
         ObservableList<Service> result = FXCollections.observableArrayList();
-        String query = "SELECT id, name, service_date, time_start, time_end, expected_participants " +
+        String query = "SELECT id, name, service_date, time_start, time_end, expected_participants, proposed_menu_id, approved_menu_id " +
                 "FROM Services WHERE event_id = " + event_id;
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
@@ -161,6 +160,28 @@ public class Service{
                 serv.timeStart = rs.getTime("time_start");
                 serv.timeEnd = rs.getTime("time_end");
                 serv.participants = rs.getInt("expected_participants");
+
+                int proposed_menu_id = rs.getInt("proposed_menu_id");
+                int approved_menu_id = rs.getInt("approved_menu_id");
+
+                if (proposed_menu_id == 0 && approved_menu_id == 0) {
+                    serv.menu = null;
+                    serv.status = ServiceStatus.IN_ATTESA;
+                    System.out.println("\nNOR PROPOSED AND APPROVED\n");
+                }
+
+                if (approved_menu_id != 0) {
+                    serv.menu = Menu.loadMenuById(approved_menu_id);
+                    serv.status = ServiceStatus.IN_CORSO;
+                    System.out.println("\nAPPROVED\n");
+                }
+
+                if (proposed_menu_id != 0) {
+                    serv.menu = Menu.loadMenuById(proposed_menu_id);
+                    serv.status = ServiceStatus.IN_ATTESA;
+                    System.out.println("\nPROPOSED\n");
+                }
+
                 result.add(serv);
             }
         });
@@ -168,5 +189,5 @@ public class Service{
         return result;
     }
 
-    
+
 }

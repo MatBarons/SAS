@@ -6,7 +6,7 @@ import catering.businesslogic.event.Event;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.Section;
-import catering.businesslogic.recipe.Recipe;
+import catering.businesslogic.procedure.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

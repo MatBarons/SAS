@@ -1,18 +1,16 @@
 package catering.businesslogic.event;
 
+import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.event.Enumerations.EventStatus;
+import catering.businesslogic.user.User;
+import catering.persistence.PersistenceManager;
+import catering.persistence.ResultHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-
-import catering.businesslogic.UseCaseLogicException;
-import catering.businesslogic.event.Enumerations.EventStatus;
-import catering.businesslogic.event.Enumerations.ServiceStatus;
-import catering.businesslogic.user.User;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import catering.persistence.PersistenceManager;
-import catering.persistence.ResultHandler;
 
 public class Event {
     private int id;
@@ -177,6 +175,8 @@ public class Event {
                 User organizer = User.loadUserById(org);
                 Event e = new Event(n, dateStart, dateEnd, client, organizer);
 
+                int chef = rs.getInt("chef_id");
+                e.chef = User.loadUserById(chef);
                 e.id = rs.getInt("id");
                 e.participants = rs.getInt("expected_participants");
                 e.numServices = rs.getInt("num_services");
@@ -203,13 +203,15 @@ public class Event {
                 event.client = rs.getString("client");
                 int org = rs.getInt("organizer_id");
                 event.organizer = User.loadUserById(org);
+                int chef = rs.getInt("chef_id");
+                event.chef = User.loadUserById(chef);
                 event.id = rs.getInt("id");
                 event.participants = rs.getInt("expected_participants");
                 event.numServices = rs.getInt("num_services");
                 event.notes = rs.getString("notes");
             }
         });
-        
+
         event.services = Service.loadServiceInfoForEvent(event.id);
 
         return event;

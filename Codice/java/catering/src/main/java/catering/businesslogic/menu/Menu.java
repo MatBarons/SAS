@@ -1,14 +1,14 @@
 package catering.businesslogic.menu;
 
 import catering.businesslogic.CatERing;
-import catering.businesslogic.recipe.Recipe;
+import catering.businesslogic.procedure.Recipe;
 import catering.businesslogic.user.User;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import catering.persistence.BatchUpdateHandler;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,17 +61,17 @@ public class Menu {
         this.inUse = false;
         this.owner = owner;
         this.featuresMap = FXCollections.observableHashMap();
-        for (String feat: m.featuresMap.keySet()) {
+        for (String feat : m.featuresMap.keySet()) {
             this.featuresMap.put(feat, m.featuresMap.get(feat));
         }
 
         this.sections = FXCollections.observableArrayList();
-        for (Section original: m.sections) {
+        for (Section original : m.sections) {
             this.sections.add(new Section(original));
         }
 
         this.freeItems = FXCollections.observableArrayList();
-        for (MenuItem original: m.freeItems) {
+        for (MenuItem original : m.freeItems) {
             this.freeItems.add(new MenuItem(original));
         }
 
@@ -251,18 +251,18 @@ public class Menu {
         return null;
     }
 
-    public ArrayList<Recipe> getNeededRecipes(){
+    public ArrayList<Recipe> getNeededRecipes() {
 
         ArrayList<Recipe> recipes = new ArrayList<>();
-        for(Section s : sections){
-            for(MenuItem mi : s.getItems()){
+        for (Section s : sections) {
+            for (MenuItem mi : s.getItems()) {
                 recipes.add(mi.getItemRecipe());
             }
         }
 
-        for(MenuItem item : this.freeItems)
+        for (MenuItem item : this.freeItems)
             recipes.add(item.getItemRecipe());
-        
+
         return recipes;
     }
 
@@ -493,7 +493,7 @@ public class Menu {
             // find if "in use"
             String inuseQ = "SELECT * FROM Services WHERE approved_menu_id = " + m.id +
                     " OR " +
-                    "proposed_menu_id = "+ m.id;
+                    "proposed_menu_id = " + m.id;
             PersistenceManager.executeQuery(inuseQ, new ResultHandler() {
                 @Override
                 public void handle(ResultSet rs) throws SQLException {
@@ -502,10 +502,29 @@ public class Menu {
                 }
             });
         }
-        for (Menu m: newMenus) {
+        for (Menu m : newMenus) {
             loadedMenus.put(m.id, m);
         }
         return FXCollections.observableArrayList(loadedMenus.values());
+    }
+
+    public static Menu loadMenuById(int id) {
+        if (loadedMenus.containsKey(id)) {
+            return loadedMenus.get(id);
+        }
+        String query = "SELECT * FROM Menus WHERE id = " + id;
+        Menu menu = new Menu();
+        PersistenceManager.executeQuery(query, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                menu.title = rs.getString("title");
+                menu.published = rs.getBoolean("published");
+                menu.id = id;
+                int owner_id = rs.getInt("owner_id");
+                menu.owner = User.loadUserById(owner_id);
+            }
+        });
+        return menu;
     }
 
     public static void saveSectionOrder(Menu m) {
