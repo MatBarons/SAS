@@ -57,7 +57,7 @@ Foglio riepilogativo</panel_attributes>
       <h>32</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-2. AggiungeRicettaFuoriMenu(procedura)</panel_attributes>
+2. AggiungeCompito(procedura)</panel_attributes>
     <additional_attributes>490.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
