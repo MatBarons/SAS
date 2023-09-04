@@ -1,39 +1,37 @@
 package catering.businesslogic.procedure;
 
-import java.util.HashMap;
-import java.util.Map;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class ProcedureManager {
-
-    private Map<Integer, Procedure> all = new HashMap<>();
 
     public ProcedureManager() {
         Procedure.loadAllProcedures();
     }
 
-    public Map<Integer, Procedure> getAll(){
-        return all;
+    public Map<Integer, Procedure> getAll() {
+        return Procedure.getAllProcedures();
     }
 
-    public  ArrayList<Preparation> getAllPreparations(){
-        return all.values().stream().filter(p -> p instanceof Preparation).map(p -> (Preparation) p).collect(Collectors.toCollection(ArrayList::new));
+    public Map<Integer, Preparation> getAllPreparations() {
+        return Procedure.getAllPreparations();
     }
 
-    public ArrayList<Recipe> getAllRecipes(){
-        return all.values().stream().filter(p -> p instanceof Recipe).map(p -> (Recipe) p).collect(Collectors.toCollection(ArrayList::new));
+    public Map<Integer, Recipe> getAllRecipes() {
+        return Procedure.getAllRecipes();
     }
 
-    public Procedure getProcedureByID(int ID){
+    public Procedure getProcedureByID(int ID) {
         return Procedure.loadProcedureById(ID);
     }
 
-    public Recipe getRecipeByID(int ID){
+    public Recipe getRecipeByID(int ID) {
         return Recipe.loadRecipeById(ID);
     }
 
-    public Preparation getPreparationByID(int ID){
+    public Preparation getPreparationByID(int ID) {
         return Preparation.loadPreparationById(ID);
     }
 }

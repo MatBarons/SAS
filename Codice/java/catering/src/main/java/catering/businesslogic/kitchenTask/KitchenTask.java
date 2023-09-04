@@ -1,18 +1,20 @@
 package catering.businesslogic.kitchenTask;
 
+import catering.businesslogic.procedure.Procedure;
+import catering.businesslogic.shift.KitchenShift;
+import catering.businesslogic.shift.Shift;
+import catering.businesslogic.user.User;
+import catering.persistence.BatchUpdateHandler;
+import catering.persistence.PersistenceManager;
+import catering.persistence.ResultHandler;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import catering.businesslogic.procedure.Procedure;
-import catering.businesslogic.shift.KitchenShift;
-import catering.businesslogic.user.User;
-import catering.persistence.BatchUpdateHandler;
-import catering.persistence.PersistenceManager;
-
-public class KitchenTask{
+public class KitchenTask {
 
     private int ID;
     private int estimatedTime;
@@ -23,9 +25,118 @@ public class KitchenTask{
     private KitchenShift shift;
     private User cook;
 
+    public KitchenTask(Procedure proc) {
+        this.toDo = true;
+        this.completed = false;
+        this.procedure = proc;
+    }
+
+    public static void saveNewTask(int sheet_id, KitchenTask task) {
+        String taskInsert = "INSERT INTO catering.KitchenTasks (summarySheet_id, procedure_id) VALUES (" +
+                sheet_id + ", " +
+                task.getProcedure().getId() + ");";
+        PersistenceManager.executeUpdate(taskInsert);
+        task.ID = PersistenceManager.getLastId();
+    }
+
+    public static ArrayList<KitchenTask> loadTasksOfSummarySheetById(int smId) {
+        String selectTasks = "SELECT * FROM KitchenTasks WHERE summarySheet_id = " + smId;
+
+        ArrayList<KitchenTask> tasksList = new ArrayList<>();
+
+        PersistenceManager.executeQuery(selectTasks, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                KitchenTask task = new KitchenTask(Procedure.loadProcedureById(rs.getInt("procedure_id")));
+                task.ID = rs.getInt(1);
+                task.cook = User.loadUserById(rs.getInt("cook_id"));
+                task.shift = (KitchenShift) Shift.loadShiftById(rs.getInt("shift_id"));
+                task.toDo = rs.getBoolean("toDo");
+                task.completed = rs.getBoolean("completed");
+                task.estimatedTime = rs.getInt("estimatedTime");
+                task.quantity = rs.getString("quantity");
+                tasksList.add(task);
+            }
+        });
+
+        return tasksList;
+    }
+
+    public static void saveTaskOrder(int sheet_id) {
+    }
+
+    public static void saveKitchenTaskAssigned(int sheet_id, KitchenTask task) {
+        String updateTaskAssigned = "UPDATE catering.KitchenTasks SET toPrepare = ?, completed = ?, quantity = ?, estimatedTime = ?, cook_id = ?, shift_id = ? WHERE id = ?";
+
+        PersistenceManager.executeBatchUpdate(updateTaskAssigned, 1, new BatchUpdateHandler() {
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                ps.setBoolean(1, task.isToDo());
+                ps.setBoolean(2, task.isCompleted());
+                ps.setString(3, task.getQuantity());
+                ps.setInt(4, task.getEstimatedTime());
+
+                if (task.getCook() != null)
+                    ps.setInt(5, task.getCook().getId());
+                else
+                    ps.setNull(5, Types.INTEGER);
+
+                if (task.getShift() != null)
+                    ps.setInt(6, task.getShift().getID());
+                else
+                    ps.setNull(6, Types.INTEGER);
+
+                ps.setInt(7, task.getID());
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
+            }
+        });
+    }
+
+    public static void saveKitchenTaskEdited(int sheet_id, KitchenTask task) {
+        String taskEdit = "UPDATE catering.KitchenTasks SET estimatedTime = " + task.getEstimatedTime() +
+                ", quantity = '" + task.getQuantity() +
+                "', completed = " + task.isCompleted() +
+                " WHERE id = " + task.getID() + ";";
+        System.out.println(taskEdit);
+        PersistenceManager.executeUpdate(taskEdit);
+    }
+
+    public static void updateDeleteKitchenTask(int sheet_id, KitchenTask task) {
+        String deleteKitchenTask = "DELETE FROM KitchenTasks WHERE id = " + task.getID();
+        System.out.println(deleteKitchenTask);
+        PersistenceManager.executeUpdate(deleteKitchenTask);
+    }
+
+    public static void updateCancelKitchenTask(int sheet_id, KitchenTask task) {
+        String updateTaskCanceled = "UPDATE catering.KitchenTasks SET toDo = " + task.isToDo()
+                + " WHERE id = " + task.getID();
+        PersistenceManager.executeUpdate(updateTaskCanceled);
+    }
+
+    public static void saveAllNewTasks(int id, ArrayList<KitchenTask> tasks) {
+        String taskInsert = "INSERT INTO catering.KitchenTasks (summarySheet_id, procedure_id) VALUES (?, ?);";
+        PersistenceManager.executeBatchUpdate(taskInsert, tasks.size(), new BatchUpdateHandler() {
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                ps.setInt(1, id);
+                ps.setInt(2, tasks.get(batchCount).getProcedure().getId());
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
+                int ID = rs.getInt(1);
+                tasks.get(count).setID(ID);
+            }
+        });
+    }
+
     public String toString() {
         return "KitchenTask{" +
-                "estimatedTime=" + estimatedTime +
+                "ID=" + ID +
+                ", estimatedTime=" + estimatedTime +
                 ", quantity='" + quantity + '\'' +
                 ", completed=" + completed +
                 ", toDo=" + toDo +
@@ -35,16 +146,12 @@ public class KitchenTask{
                 '}';
     }
 
-    public int getID(){
+    public int getID() {
         return ID;
     }
-    
-    public void setID(int ID){
-        this.ID = ID;
-    }
 
-    public KitchenTask(Procedure proc) {
-        this.procedure = proc;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public int getEstimatedTime() {
@@ -83,98 +190,20 @@ public class KitchenTask{
         return procedure;
     }
 
-    public KitchenShift getShift(){
+    public KitchenShift getShift() {
         return shift;
     }
 
-    public void setShift(KitchenShift shift){
+    public void setShift(KitchenShift shift) {
         this.shift = shift;
     }
 
-    public User getCook(){
+    public User getCook() {
         return cook;
     }
 
-    public void setCook(User cook){
+    public void setCook(User cook) {
         this.cook = cook;
-    }
-
-    public static void saveNewTask(int sheet_id, KitchenTask task) {
-        String taskInsert = "INSERT INTO catering.KitchenTasks (summarySheet_id, recipe_id) VALUES (" +
-                sheet_id + ", " +
-                task.getProcedure().getId() + ");";
-        PersistenceManager.executeUpdate(taskInsert);
-        task.ID = PersistenceManager.getLastId();
-    }
-
-    public static void saveTaskOrder(int sheet_id) {
-    }
-
-	public static void saveKitchenTaskAssigned(int sheet_id, KitchenTask task) {
-        String updateTaskAssigned = "UPDATE catering.KitchenTasks SET toPrepare = ?, completed = ?, quantity = ?, estimatedTime = ?, cook_id = ?, shift_id = ? WHERE id = ?";
-
-        PersistenceManager.executeBatchUpdate(updateTaskAssigned, 1, new BatchUpdateHandler() {
-            @Override
-            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
-                ps.setBoolean(1, task.isToDo());
-                ps.setBoolean(2, task.isCompleted());
-                ps.setString(3, task.getQuantity());
-                ps.setInt(4, task.getEstimatedTime());
-
-                if (task.getCook() != null)
-                    ps.setInt(5, task.getCook().getId());
-                else
-                    ps.setNull(5, Types.INTEGER);
-
-                if (task.getShift() != null)
-                    ps.setInt(6, task.getShift().getID());
-                else
-                    ps.setNull(6, Types.INTEGER);
-
-                ps.setInt(7, task.getID());
-            }
-            @Override
-            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
-            }
-        });
-	}
-
-	public static void saveKitchenTaskEdited(int sheet_id, KitchenTask task) {
-        String taskEdit = "UPDATE catering.KitchenTasks SET estimatedTime = " + task.getEstimatedTime() +
-            ", quantity = '" + task.getQuantity() +
-            "', completed = " + task.isCompleted() +
-            " WHERE id = " + task.getID() + ";";
-        System.out.println(taskEdit);
-        PersistenceManager.executeUpdate(taskEdit);
-    }
-
-    public static void updateDeleteKitchenTask(int sheet_id, KitchenTask task) {
-        String deleteKitchenTask = "DELETE FROM KitchenTasks WHERE id = " + task.getID();
-        PersistenceManager.executeUpdate(deleteKitchenTask);
-    }
-
-    public static void updateCancelKitchenTask(int sheet_id, KitchenTask task) {
-        String updateTaskCanceled = "UPDATE catering.KitchenTasks SET toPrepare = " + task.isToDo()
-                + " WHERE id = " + task.getID();
-        PersistenceManager.executeUpdate(updateTaskCanceled);
-    }
-
-    public static void saveAllNewTasks(int id, ArrayList<KitchenTask> tasks) {
-        String taskInsert = "INSERT INTO catering.KitchenTasks (summarySheet_id, recipe_id, position) VALUES (?, ?, ?);";
-        PersistenceManager.executeBatchUpdate(taskInsert, tasks.size(), new BatchUpdateHandler() {
-            @Override
-            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
-                ps.setInt(1, id);
-                ps.setInt(2, tasks.get(batchCount).getProcedure().getId());
-                ps.setInt(3, batchCount);
-            }
-
-            @Override
-            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
-                int ID = rs.getInt(1);
-                tasks.get(count).setID(ID);
-            }
-        });
     }
 
 }

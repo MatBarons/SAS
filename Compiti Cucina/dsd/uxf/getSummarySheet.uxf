@@ -4,9 +4,9 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>513</x>
-      <y>27</y>
-      <w>243</w>
+      <x>549</x>
+      <y>126</y>
+      <w>207</w>
       <h>45</h>
     </coordinates>
     <panel_attributes>CatERingAppManager.ktManager:
@@ -16,8 +16,8 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>243</x>
-      <y>0</y>
+      <x>270</x>
+      <y>99</y>
       <w>54</w>
       <h>99</h>
     </coordinates>
@@ -27,8 +27,8 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>261</x>
-      <y>63</y>
+      <x>288</x>
+      <y>162</y>
       <w>27</w>
       <h>333</h>
     </coordinates>
@@ -38,8 +38,8 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>621</x>
-      <y>63</y>
+      <x>648</x>
+      <y>162</y>
       <w>27</w>
       <h>333</h>
     </coordinates>
@@ -49,20 +49,20 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>261</x>
-      <y>108</y>
+      <x>288</x>
+      <y>207</y>
       <w>378</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-getSummarySheet()</panel_attributes>
+getCurrentSheet()</panel_attributes>
     <additional_attributes>400.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>621</x>
-      <y>72</y>
+      <x>648</x>
+      <y>171</y>
       <w>18</w>
       <h>297</h>
     </coordinates>
@@ -72,8 +72,8 @@ getSummarySheet()</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>108</x>
-      <y>162</y>
+      <x>135</x>
+      <y>261</y>
       <w>603</w>
       <h>216</h>
     </coordinates>
@@ -95,8 +95,8 @@ fontsize=12
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>261</x>
-      <y>198</y>
+      <x>288</x>
+      <y>297</y>
       <w>378</w>
       <h>36</h>
     </coordinates>
@@ -107,13 +107,13 @@ throw UseCaseLogicException</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>261</x>
-      <y>324</y>
+      <x>288</x>
+      <y>423</y>
       <w>378</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-currentSummarySheet</panel_attributes>
+currentSheet</panel_attributes>
     <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
   </element>
 </diagram>

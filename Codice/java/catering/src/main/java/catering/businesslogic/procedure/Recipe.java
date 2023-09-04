@@ -39,7 +39,7 @@ public class Recipe extends Procedure{
                 }
             }
         });
-        ObservableList<Recipe> ret =  FXCollections.observableArrayList(pm.getAllRecipes());
+        ObservableList<Recipe> ret =  FXCollections.observableArrayList(pm.getAllRecipes().values());
         Collections.sort(ret, new Comparator<Recipe>() {
             @Override
             public int compare(Recipe o1, Recipe o2) {

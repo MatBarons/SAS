@@ -7,6 +7,7 @@ import catering.businesslogic.CatERing;
 import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.event.Enumerations.EventStatus;
 import catering.businesslogic.event.Enumerations.ServiceStatus;
+import catering.businesslogic.kitchenTask.SummarySheet;
 import catering.businesslogic.user.User;
 import javafx.collections.ObservableList;
 
@@ -68,6 +69,9 @@ public class EventManager {
         currentEvent.assignStaff(service,newStaff);
     }
 
+    public SummarySheet getSummarySheetByService(Service service) throws UseCaseLogicException {
+        return currentEvent.getSummarySheetByService(service);
+    }
 
     public Event getCurrentEvent(){
         return currentEvent;

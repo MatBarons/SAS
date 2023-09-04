@@ -16,13 +16,15 @@ public class TestCatERing5a {
             CatERing.getInstance().getUserManager().fakeLogin("Lidia");
             System.out.println(CatERing.getInstance().getUserManager().getCurrentUser());
             
-            System.out.println("\nTEST CREA FOGLIO RIEPILOGATIVO");
-            Event event = CatERing.getInstance().getEventManager().getEventByID(0);
+            Event event = CatERing.getInstance().getEventManager().getEventByID(1);
             Service service = event.getServices().get(0);
-            CatERing.getInstance().getKitchenTaskManager().generateSummarySheet(event, service);
+            CatERing.getInstance().getKitchenTaskManager().setCurrentSummarySheet(service.getSheet());
+
+            System.out.println("\nTEST APRE FOGLIO RIEPILOGATIVO");
+            CatERing.getInstance().getKitchenTaskManager().getCurrentSheet();
 
             System.out.println("\nCREO UNA TASK DA MODIFICARE IN SEGUITO");
-            Procedure proc = CatERing.getInstance().getProcedureManager().getProcedureByID(0);
+            Procedure proc = CatERing.getInstance().getProcedureManager().getProcedureByID(1);
             KitchenTask task = CatERing.getInstance().getKitchenTaskManager().insertTask(proc);
 
             System.out.println("\nTASK NON MODIFICATA \n");

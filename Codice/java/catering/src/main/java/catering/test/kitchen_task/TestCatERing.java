@@ -16,10 +16,6 @@ import java.util.ArrayList;
 public class TestCatERing {
     public static void main(String[] args) {
         try {
-
-            System.out.println("TEST DATABASE CONNECTION");
-            PersistenceManager.testSQLConnection();
-
             System.out.println("TEST FAKE LOGIN");
             CatERing.getInstance().getUserManager().fakeLogin("Lidia");
             System.out.println(CatERing.getInstance().getUserManager().getCurrentUser());
@@ -27,8 +23,6 @@ public class TestCatERing {
             System.out.println("\nTEST CREA FOGLIO RIEPILOGATIVO");
             Event event = CatERing.getInstance().getEventManager().getEventByID(1);
             Service service = event.getServices().get(0);
-            //TODO: FIX HERE
-            // IL SERVIZIO VIENE DATO COME NON CONFERMATO
             SummarySheet sheet = CatERing.getInstance().getKitchenTaskManager().generateSummarySheet(event, service);
             System.out.println(sheet.toString());
 
@@ -43,14 +37,14 @@ public class TestCatERing {
             System.out.println(sheet);
 
             System.out.println("\nTEST CONSULTA TURNI CUCINA");
-            ArrayList<KitchenShift> shiftBoard = CatERing.getInstance().getKitchenTaskManager().getKitchenShiftBoard(0);
+            ArrayList<KitchenShift> shiftBoard = CatERing.getInstance().getKitchenTaskManager().getKitchenShiftBoard(2);
             System.out.println(shiftBoard);
 
             System.out.println("\nTEST ASSEGNA COMPITI CUCINA");
             KitchenTask task2 = CatERing.getInstance().getKitchenTaskManager().getCurrentSheet().getTasks().get(1);
             System.out.println("\n PRIMA DELL'ASSEGNAMENTO: \n");
             System.out.println(task2);
-            KitchenShift shift = CatERing.getInstance().getKitchenTaskManager().getKitchenShiftBoard(0).get(0);
+            KitchenShift shift = CatERing.getInstance().getKitchenTaskManager().getKitchenShiftBoard(2).get(0);
             task2.setShift(shift);
             User cook = CatERing.getInstance().getUserManager().getCook("Guido");
             task2.setCook(cook);

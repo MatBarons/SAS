@@ -34,7 +34,7 @@ public class InsertItemDialog {
     private boolean confirmed;
 
     public void initialize() {
-        recipeCombo.setItems(FXCollections.observableArrayList(CatERing.getInstance().getProcedureManager().getAllRecipes()));
+        recipeCombo.setItems(FXCollections.observableArrayList(CatERing.getInstance().getProcedureManager().getAllRecipes().values()));
         confirmed = false;
     }
 

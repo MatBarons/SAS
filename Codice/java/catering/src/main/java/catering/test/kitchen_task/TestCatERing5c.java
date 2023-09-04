@@ -14,13 +14,15 @@ public class TestCatERing5c {
             CatERing.getInstance().getUserManager().fakeLogin("Lidia");
             System.out.println(CatERing.getInstance().getUserManager().getCurrentUser());
 
-            System.out.println("\nTEST CREA FOGLIO RIEPILOGATIVO");
-            Event event = CatERing.getInstance().getEventManager().getEventByID(0);
+            Event event = CatERing.getInstance().getEventManager().getEventByID(1);
             Service service = event.getServices().get(0);
-            CatERing.getInstance().getKitchenTaskManager().generateSummarySheet(event, service);
+            CatERing.getInstance().getKitchenTaskManager().setCurrentSummarySheet(service.getSheet());
+
+            System.out.println("\nTEST APRE FOGLIO RIEPILOGATIVO");
+            CatERing.getInstance().getKitchenTaskManager().getCurrentSheet();
 
             System.out.println("\nCREO E INSERISCO UNA TASK");
-            Procedure proc = CatERing.getInstance().getProcedureManager().getProcedureByID(0);
+            Procedure proc = CatERing.getInstance().getProcedureManager().getProcedureByID(4);
             KitchenTask task = CatERing.getInstance().getKitchenTaskManager().insertTask(proc);
 
             System.out.println("\nTASK PRIMA DELLA CANCELLAZIONE \n");
@@ -28,7 +30,7 @@ public class TestCatERing5c {
             
             CatERing.getInstance().getKitchenTaskManager().cancelTask(task);
             System.out.println("\nTASK DOPO LA CANCELLAZIONE \n");
-            System.out.println(task.toString());
+            System.out.println(task);
         }catch(UseCaseLogicException e){
             System.out.println("Errore di logica nello use case");
         }

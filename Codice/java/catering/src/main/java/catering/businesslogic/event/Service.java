@@ -110,7 +110,7 @@ public class Service {
 
     public SummarySheet getSheet() throws UseCaseLogicException {
         if (sheet == null) {
-            throw new UseCaseLogicException();
+            throw new UseCaseLogicException("Foglio riepilogativo non ancora creato");
         }
         return sheet;
     }
@@ -148,8 +148,7 @@ public class Service {
 
     public static ObservableList<Service> loadServiceInfoForEvent(int event_id) {
         ObservableList<Service> result = FXCollections.observableArrayList();
-        String query = "SELECT id, name, service_date, time_start, time_end, expected_participants, proposed_menu_id, approved_menu_id " +
-                "FROM Services WHERE event_id = " + event_id;
+        String query = "SELECT * FROM Services WHERE event_id = " + event_id;
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
@@ -167,20 +166,21 @@ public class Service {
                 if (proposed_menu_id == 0 && approved_menu_id == 0) {
                     serv.menu = null;
                     serv.status = ServiceStatus.IN_ATTESA;
-                    System.out.println("\nNOR PROPOSED AND APPROVED\n");
                 }
 
                 if (approved_menu_id != 0) {
                     serv.menu = Menu.loadMenuById(approved_menu_id);
                     serv.status = ServiceStatus.IN_CORSO;
-                    System.out.println("\nAPPROVED\n");
                 }
 
                 if (proposed_menu_id != 0) {
                     serv.menu = Menu.loadMenuById(proposed_menu_id);
                     serv.status = ServiceStatus.IN_ATTESA;
-                    System.out.println("\nPROPOSED\n");
                 }
+
+                SummarySheet sheet = SummarySheet.loadSummarySheetByServiceID(serv.id);
+
+                serv.setSheet(sheet);
 
                 result.add(serv);
             }

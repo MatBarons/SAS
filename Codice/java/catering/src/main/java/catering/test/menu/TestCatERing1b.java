@@ -4,6 +4,7 @@ import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.MenuException;
 import catering.businesslogic.menu.Section;
+import catering.businesslogic.procedure.Procedure;
 import catering.businesslogic.procedure.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +23,11 @@ public class TestCatERing1b {
             Section primi = CatERing.getInstance().getMenuManager().defineSection("Primi");
             Section secondi = CatERing.getInstance().getMenuManager().defineSection("Secondi");
 
-            ObservableList<Recipe> recipes = FXCollections.observableArrayList(CatERing.getInstance().getProcedureManager().getAllRecipes());
+            Procedure.loadAllProcedures();
+
+            ObservableList<Recipe> recipes =
+                    FXCollections.observableArrayList(CatERing.getInstance().getProcedureManager().getAllRecipes().values());
+            System.out.println("RECIPE 0: "+ recipes);
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(0), antipasti);
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(1), antipasti);
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(2), antipasti);

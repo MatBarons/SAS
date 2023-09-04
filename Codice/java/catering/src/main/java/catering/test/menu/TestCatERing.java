@@ -7,6 +7,7 @@ import catering.businesslogic.event.Service;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.Section;
 import catering.businesslogic.procedure.Recipe;
+import catering.persistence.PersistenceManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -16,8 +17,6 @@ import java.util.Map;
 public class TestCatERing {
     public static void main(String[] args) {
         try {
-            /* System.out.println("TEST DATABASE CONNECTION");
-            PersistenceManager.testSQLConnection();*/
             System.out.println("TEST FAKE LOGIN");
             CatERing.getInstance().getUserManager().fakeLogin("Lidia");
             System.out.println(CatERing.getInstance().getUserManager().getCurrentUser());
@@ -42,7 +41,8 @@ public class TestCatERing {
             System.out.println("");
 
             System.out.println("\nTEST GET RECIPES AND INSERT ITEM IN SECTION");
-            ObservableList<Recipe> recipes = FXCollections.observableArrayList(CatERing.getInstance().getProcedureManager().getAllRecipes());
+            ObservableList<Recipe> recipes =
+                    FXCollections.observableArrayList(CatERing.getInstance().getProcedureManager().getAllRecipes().values());
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(0), antipasti);
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(1), antipasti);
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(2), antipasti);

@@ -16,13 +16,15 @@ public class TestCatERing5b {
             CatERing.getInstance().getUserManager().fakeLogin("Lidia");
             System.out.println(CatERing.getInstance().getUserManager().getCurrentUser());
 
-            System.out.println("\nTEST CREA FOGLIO RIEPILOGATIVO");
-            Event event = CatERing.getInstance().getEventManager().getEventByID(0);
+            Event event = CatERing.getInstance().getEventManager().getEventByID(1);
             Service service = event.getServices().get(0);
-            CatERing.getInstance().getKitchenTaskManager().generateSummarySheet(event, service);
+            CatERing.getInstance().getKitchenTaskManager().setCurrentSummarySheet(service.getSheet());
+
+            System.out.println("\nTEST APRE FOGLIO RIEPILOGATIVO");
+            CatERing.getInstance().getKitchenTaskManager().getCurrentSheet();
 
             System.out.println("\nCREO E INSERISCO UNA TASK");
-            Procedure proc = CatERing.getInstance().getProcedureManager().getProcedureByID(0);
+            Procedure proc = CatERing.getInstance().getProcedureManager().getProcedureByID(2);
             KitchenTask task = CatERing.getInstance().getKitchenTaskManager().insertTask(proc);
 
             System.out.println("\nTUTTE LE TASK PRIMA DELLA CANCELLAZIONE \n");
@@ -32,6 +34,7 @@ public class TestCatERing5b {
             System.out.println("\nTUTTE LE TASK DOPO LA CANCELLAZIONE \n");
             System.out.println(CatERing.getInstance().getKitchenTaskManager().getCurrentSheet().toString());
         } catch (UseCaseLogicException e) {
+            System.out.println(e.getMessage());
         }
     }
 

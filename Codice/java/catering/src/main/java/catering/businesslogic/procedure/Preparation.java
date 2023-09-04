@@ -38,7 +38,7 @@ public class Preparation extends Procedure{
                 }
             }
         });
-        ObservableList<Preparation> ret =  FXCollections.observableArrayList(pm.getAllPreparations());
+        ObservableList<Preparation> ret =  FXCollections.observableArrayList(pm.getAllPreparations().values());
         Collections.sort(ret, new Comparator<Preparation>() {
             @Override
             public int compare(Preparation o1, Preparation o2) {

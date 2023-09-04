@@ -21,7 +21,7 @@ public class UserManager {
     public User getCook(String username) throws UseCaseLogicException{
         User user = getUser(username);
         if(!user.isCook()){
-            throw new UseCaseLogicException();
+            throw new UseCaseLogicException("UTENTE NON È UN CUOCO");
         }
         return user;
     }

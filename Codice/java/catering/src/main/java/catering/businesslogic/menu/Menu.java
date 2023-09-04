@@ -133,7 +133,7 @@ public class Menu {
         this.sections.add(new Section("Secondi"));
         this.sections.add(new Section("Dessert"));
 
-        Recipe[] all = CatERing.getInstance().getProcedureManager().getAllRecipes().toArray(new Recipe[0]);
+        Recipe[] all = CatERing.getInstance().getProcedureManager().getAllRecipes().values().toArray(new Recipe[0]);
         freeItems.add(new MenuItem(all[3]));
         freeItems.add(new MenuItem(all[4]));
         freeItems.add(new MenuItem(all[5]));
@@ -524,6 +524,11 @@ public class Menu {
                 menu.owner = User.loadUserById(owner_id);
             }
         });
+        // load sections
+        menu.sections = Section.loadSectionsFor(menu.id);
+
+        // load free items
+        menu.freeItems = MenuItem.loadItemsFor(menu.id, 0);
         return menu;
     }
 
