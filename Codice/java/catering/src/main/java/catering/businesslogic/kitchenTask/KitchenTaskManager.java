@@ -99,14 +99,14 @@ public class KitchenTaskManager{
             throw new UseCaseLogicException();
         }
         currentSheet.cancelTask(task);
-        notifyCancelTask(currentSheet, task);
+        notifyCanceledTask(currentSheet, task);
     }
 
-    public void removeTask(KitchenTask task) throws UseCaseLogicException{
+    public void deleteTask(KitchenTask task) throws UseCaseLogicException{
         if(!currentSheet.getTasks().contains(task)){
             throw new UseCaseLogicException();
         }
-        currentSheet.removeTask(task);
+        currentSheet.deleteTask(task);
         notifyDeletedTask(currentSheet, task);
     }
 
@@ -158,9 +158,9 @@ public class KitchenTaskManager{
         }
     }
 
-    private void notifyCancelTask(SummarySheet sheet,KitchenTask task){
+    private void notifyCanceledTask(SummarySheet sheet,KitchenTask task){
         for (KitchenTaskEventReceiver eventReceiver : eventReceivers) {
-            eventReceiver.updateCancelTask(sheet,task);
+            eventReceiver.updateCanceledTask(sheet,task);
         }
     }
 }

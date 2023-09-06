@@ -20,7 +20,7 @@ public class KitchenTaskPersistence implements KitchenTaskEventReceiver {
 
     @Override
     public void updateRearrangedSheet(SummarySheet sheet) {
-        SummarySheet.saveTaskOrder(sheet);
+        KitchenTask.saveTaskOrder(sheet);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class KitchenTaskPersistence implements KitchenTaskEventReceiver {
     }
 
     @Override
-    public void updateCancelTask(SummarySheet sheet, KitchenTask task) {
+    public void updateCanceledTask(SummarySheet sheet, KitchenTask task) {
         KitchenTask.updateCancelKitchenTask(sheet.getID(), task);
     }
 }

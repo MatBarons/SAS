@@ -30,7 +30,7 @@ public class TestCatERing5b {
             System.out.println("\nTUTTE LE TASK PRIMA DELLA CANCELLAZIONE \n");
             System.out.println(CatERing.getInstance().getKitchenTaskManager().getCurrentSheet().toString());
             
-            CatERing.getInstance().getKitchenTaskManager().removeTask(task);
+            CatERing.getInstance().getKitchenTaskManager().deleteTask(task);
             System.out.println("\nTUTTE LE TASK DOPO LA CANCELLAZIONE \n");
             System.out.println(CatERing.getInstance().getKitchenTaskManager().getCurrentSheet().toString());
         } catch (UseCaseLogicException e) {
