@@ -62,7 +62,19 @@ public class KitchenTask {
         return tasksList;
     }
 
-    public static void saveTaskOrder(int sheet_id) {
+    public static void saveTaskOrder(SummarySheet sheet) {
+        String upd = "UPDATE KitchenTasks SET position = ? WHERE id = ?";
+        PersistenceManager.executeBatchUpdate(upd, sheet.getTasks().size(), new BatchUpdateHandler() {
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                ps.setInt(1, batchCount);
+                ps.setInt(2, sheet.getTasks().get(batchCount).getID());
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
+            }
+        });
     }
 
     public static void saveKitchenTaskAssigned(int sheet_id, KitchenTask task) {

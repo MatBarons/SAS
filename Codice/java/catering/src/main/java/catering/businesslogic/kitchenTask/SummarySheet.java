@@ -8,8 +8,6 @@ import catering.businesslogic.user.User;
 import catering.persistence.BatchUpdateHandler;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,39 +53,6 @@ public class SummarySheet {
                 KitchenTask.saveAllNewTasks(sheet.getID(), sheet.getTasks());
             }
         }
-    }
-
-    public static void saveTaskOrder(SummarySheet sheet) {
-        String upd = "UPDATE KitchenTasks SET position = ? WHERE id = ?";
-        PersistenceManager.executeBatchUpdate(upd, sheet.tasks.size(), new BatchUpdateHandler() {
-            @Override
-            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
-                ps.setInt(1, batchCount);
-                ps.setInt(2, sheet.tasks.get(batchCount).getID());
-            }
-
-            @Override
-            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
-            }
-        });
-    }
-
-    public static ObservableList<SummarySheet> loadAllSheets() {
-        String query = "SELECT * FROM SummarySheets";
-        ObservableList<SummarySheet> summarySheets = FXCollections.observableArrayList();
-        PersistenceManager.executeQuery(query, new ResultHandler() {
-            @Override
-            public void handle(ResultSet rs) throws SQLException {
-                int serviceId = rs.getInt("service_id");
-                SummarySheet sm = new SummarySheet();
-                sm.ID = rs.getInt("id");
-                sm.tasks = KitchenTask.loadTasksOfSummarySheetById(sm.ID);
-//                sm.
-
-//                summarySheets.add(sm);
-            }
-        });
-        return summarySheets;
     }
 
     public static SummarySheet loadSummarySheetByServiceID(int serviceID) {
@@ -168,7 +133,7 @@ public class SummarySheet {
         task.setShift(null);
     }
 
-    public void removeTask(KitchenTask task) throws UseCaseLogicException {
+    public void deleteTask(KitchenTask task) throws UseCaseLogicException {
         if (task.isCompleted() || !task.isToDo()) {
             throw new UseCaseLogicException();
         }

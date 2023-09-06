@@ -55,7 +55,7 @@ public class EventManager {
             throw new UseCaseLogicException();
         }
         currentEvent.setChef(chef);
-        notifyAssignedChef(currentEvent);
+        notifyAssignedChef(currentEvent,chef);
     }
 
     public void assignStaff(Service service,User newStaff) throws UseCaseLogicException {
@@ -67,6 +67,7 @@ public class EventManager {
             throw new UseCaseLogicException();
         }
         currentEvent.assignStaff(service,newStaff);
+        notifyAssignedStaff(currentEvent, service, newStaff);
     }
 
     public SummarySheet getSummarySheetByService(Service service) throws UseCaseLogicException {
@@ -121,15 +122,15 @@ public class EventManager {
         }
     }
 
-    private void notifyAssignedChef(Event event){
+    private void notifyAssignedChef(Event event, User chef){
         for (EventEventReceiver eventReceiver : eventReceivers) {
-            eventReceiver.updateAssignedChef(event);
+            eventReceiver.updateAssignedChef(event,chef);
         }
     }
 
-    public void notifyAssignedStaff(Event event){
+    public void notifyAssignedStaff(Event event,Service service, User staff){
         for (EventEventReceiver eventReceiver : eventReceivers) {
-            eventReceiver.updateAssignedStaff(event);
+            eventReceiver.updateAssignedStaff(event,service,staff);
         }
     }
 }

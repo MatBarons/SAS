@@ -10,5 +10,5 @@ public interface KitchenTaskEventReceiver{
     public void updateAssignedTask(SummarySheet sheet,KitchenTask task);
     public void updateEditedTask(SummarySheet sheet,KitchenTask task);
     public void updateDeletedTask(SummarySheet sheet,KitchenTask task);
-    public void updateCancelTask(SummarySheet sheet,KitchenTask task);
+    public void updateCanceledTask(SummarySheet sheet,KitchenTask task);
 }
