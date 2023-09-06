@@ -563,7 +563,7 @@ layer=0</panel_attributes>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-7. AssegnaPersonaleServizio(servizio, personale)
+7. AssegnaPersonaleServizio(servizio, personale, turno)
 layer=2</panel_attributes>
     <additional_attributes>640.0;20.0;10.0;20.0</additional_attributes>
   </element>

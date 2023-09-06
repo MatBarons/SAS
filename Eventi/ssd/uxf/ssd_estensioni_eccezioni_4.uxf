@@ -295,7 +295,7 @@ bg=#B8E0E0</panel_attributes>
       <h>32</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-7.AssegnaCompitoServizio(servizio, turno, personale, attività)</panel_attributes>
+7. AssegnaPersonaleServizio(servizio, personale, turno)</panel_attributes>
     <additional_attributes>620.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
