@@ -205,7 +205,7 @@ layer=3</panel_attributes>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-1a.1 RecuperaFoglioRiepilogativo(servizio)
+1a.1 RecuperaFoglioRiepilogativo()
 layer=2</panel_attributes>
     <additional_attributes>490.0;20.0;10.0;20.0</additional_attributes>
   </element>

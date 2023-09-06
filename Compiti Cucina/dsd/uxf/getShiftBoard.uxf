@@ -4,8 +4,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>351</x>
-      <y>108</y>
+      <x>333</x>
+      <y>270</y>
       <w>207</w>
       <h>45</h>
     </coordinates>
@@ -16,8 +16,8 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>135</x>
-      <y>81</y>
+      <x>117</x>
+      <y>243</y>
       <w>54</w>
       <h>99</h>
     </coordinates>
@@ -27,8 +27,8 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>144</y>
+      <x>135</x>
+      <y>306</y>
       <w>27</w>
       <h>252</h>
     </coordinates>
@@ -38,8 +38,8 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>441</x>
-      <y>144</y>
+      <x>423</x>
+      <y>306</y>
       <w>27</w>
       <h>252</h>
     </coordinates>
@@ -49,8 +49,8 @@ KitchenTaskManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>189</y>
+      <x>135</x>
+      <y>351</y>
       <w>306</w>
       <h>36</h>
     </coordinates>
@@ -61,8 +61,8 @@ getShiftBoard(serviceID)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>441</x>
-      <y>153</y>
+      <x>423</x>
+      <y>315</y>
       <w>18</w>
       <h>216</h>
     </coordinates>
@@ -72,8 +72,8 @@ getShiftBoard(serviceID)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>315</y>
+      <x>135</x>
+      <y>477</y>
       <w>306</w>
       <h>36</h>
     </coordinates>
@@ -84,8 +84,8 @@ shiftBoard</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>567</x>
-      <y>108</y>
+      <x>549</x>
+      <y>270</y>
       <w>225</w>
       <h>45</h>
     </coordinates>
@@ -96,8 +96,8 @@ ShiftManager</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>666</x>
-      <y>243</y>
+      <x>648</x>
+      <y>405</y>
       <w>18</w>
       <h>63</h>
     </coordinates>
@@ -107,8 +107,8 @@ ShiftManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>666</x>
-      <y>144</y>
+      <x>648</x>
+      <y>306</y>
       <w>27</w>
       <h>252</h>
     </coordinates>
@@ -118,8 +118,8 @@ ShiftManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
-      <y>225</y>
+      <x>432</x>
+      <y>387</y>
       <w>234</w>
       <h>36</h>
     </coordinates>
@@ -130,13 +130,31 @@ getShiftBoard(serviceID)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
-      <y>288</y>
+      <x>432</x>
+      <y>450</y>
       <w>234</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 shiftBoard</panel_attributes>
     <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>279</x>
+      <y>99</y>
+      <w>396</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+DSD
+
+getShiftBoard
+lw=0
+fontsize=24
+bg=#F9FF47</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
