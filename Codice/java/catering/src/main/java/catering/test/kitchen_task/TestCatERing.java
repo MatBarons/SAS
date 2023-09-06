@@ -9,9 +9,9 @@ import catering.businesslogic.kitchenTask.SummarySheet;
 import catering.businesslogic.procedure.Procedure;
 import catering.businesslogic.shift.KitchenShift;
 import catering.businesslogic.user.User;
-import catering.persistence.PersistenceManager;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class TestCatERing {
     public static void main(String[] args) {
@@ -45,11 +45,14 @@ public class TestCatERing {
             System.out.println("\n PRIMA DELL'ASSEGNAMENTO: \n");
             System.out.println(task2);
             KitchenShift shift = CatERing.getInstance().getKitchenTaskManager().getKitchenShiftBoard(2).get(0);
-            task2.setShift(shift);
+//            task2.setShift(shift);
             User cook = CatERing.getInstance().getUserManager().getCook("Guido");
-            task2.setCook(cook);
-            task2.setEstimatedTime(60);
-            task2.setQuantity("10kg");
+//            task2.setCook(cook);
+//            task2.setEstimatedTime(60);
+//            task2.setQuantity("10kg");
+            CatERing.getInstance().getKitchenTaskManager().assignTask(task2, Optional.ofNullable(shift),
+                    Optional.ofNullable(cook), Optional.of(60),
+                    Optional.of("10kg"));
             System.out.println("DOPO L'ASSEGNAMENTO: \n");
             System.out.println(task2);
 

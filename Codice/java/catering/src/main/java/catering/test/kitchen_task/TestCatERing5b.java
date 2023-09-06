@@ -27,11 +27,11 @@ public class TestCatERing5b {
             Procedure proc = CatERing.getInstance().getProcedureManager().getProcedureByID(2);
             KitchenTask task = CatERing.getInstance().getKitchenTaskManager().insertTask(proc);
 
-            System.out.println("\nTUTTE LE TASK PRIMA DELLA CANCELLAZIONE \n");
+            System.out.println("\nTUTTE LE TASK PRIMA DELL'ELIMINAZIONE \n");
             System.out.println(CatERing.getInstance().getKitchenTaskManager().getCurrentSheet().toString());
             
             CatERing.getInstance().getKitchenTaskManager().deleteTask(task);
-            System.out.println("\nTUTTE LE TASK DOPO LA CANCELLAZIONE \n");
+            System.out.println("\nTUTTE LE TASK DOPO L'ELIMINAZIONE \n");
             System.out.println(CatERing.getInstance().getKitchenTaskManager().getCurrentSheet().toString());
         } catch (UseCaseLogicException e) {
             System.out.println(e.getMessage());

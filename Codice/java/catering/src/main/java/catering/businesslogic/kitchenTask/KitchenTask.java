@@ -78,7 +78,8 @@ public class KitchenTask {
     }
 
     public static void saveKitchenTaskAssigned(int sheet_id, KitchenTask task) {
-        String updateTaskAssigned = "UPDATE catering.KitchenTasks SET toPrepare = ?, completed = ?, quantity = ?, estimatedTime = ?, cook_id = ?, shift_id = ? WHERE id = ?";
+        String updateTaskAssigned = "UPDATE catering.KitchenTasks SET toDo = ?, completed = ?, quantity = ?, " +
+                "estimatedTime = ?, cook_id = ?, shift_id = ? WHERE id = ?";
 
         PersistenceManager.executeBatchUpdate(updateTaskAssigned, 1, new BatchUpdateHandler() {
             @Override

@@ -1,5 +1,7 @@
 package catering.businesslogic.user;
 
+import catering.businesslogic.shift.Shift;
+import catering.businesslogic.shift.ShiftManager;
 import javafx.collections.FXCollections;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
@@ -43,10 +45,10 @@ public class User {
         return roles.contains(Role.CUOCO);
     }
 
-    public boolean isAvailable(KitchenShift shift) throws UseCaseLogicException {
-        if (!roles.contains(Role.CUOCO)) {
-            throw new UseCaseLogicException();
-        }
+    public boolean isAvailable(Shift shift) throws UseCaseLogicException {
+//        if (!roles.contains(Role.CUOCO) || !roles.contains(Role.SERVIZIO)) {
+//            throw new UseCaseLogicException();
+//        }
         return true;
     }
 

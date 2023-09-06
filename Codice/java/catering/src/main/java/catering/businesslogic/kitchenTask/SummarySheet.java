@@ -90,21 +90,18 @@ public class SummarySheet {
     }
 
     public void assignTask(KitchenTask task, Optional<KitchenShift> shift, Optional<User> cook, Optional<Integer> time, Optional<String> quantity) throws UseCaseLogicException {
-        if (shift != null && cook == null) {
+        if (shift.isPresent() && cook.isEmpty()) {
             task.setShift(shift.get());
-        } else if (shift == null && cook != null) {
+        } else if (shift.isEmpty() && cook.isPresent()) {
             task.setCook(cook.get());
-        } else if (shift != null && cook != null) {
-            if (!cook.get().isAvailable(shift.get())) {
-                throw new UseCaseLogicException();
-            }
+        } else if (shift.isPresent() && cook.isPresent()) {
             task.setShift(shift.get());
             task.setCook(cook.get());
         }
-        if (time != null) {
+        if (time.isPresent()) {
             task.setEstimatedTime(time.get());
         }
-        if (quantity != null) {
+        if (quantity.isPresent()) {
             task.setQuantity(quantity.get());
         }
         task.setCompleted(false);
@@ -113,30 +110,24 @@ public class SummarySheet {
     }
 
     public void editTask(KitchenTask task, Optional<Integer> time, Optional<String> quantity, Optional<Boolean> completed) {
-        if (completed != null) {
+        if (completed.isPresent()) {
             task.setCompleted(completed.get());
         }
-        if (time != null) {
+        if (time.isPresent()) {
             task.setEstimatedTime(time.get());
         }
-        if (quantity != null) {
+        if (quantity.isPresent()) {
             task.setQuantity(quantity.get());
         }
     }
 
-    public void cancelTask(KitchenTask task) throws UseCaseLogicException {
-        if (task.isCompleted() || !task.isToDo()) {
-            throw new UseCaseLogicException();
-        }
+    public void cancelTask(KitchenTask task) {
         task.setToDo(false);
         task.setCook(null);
         task.setShift(null);
     }
 
-    public void deleteTask(KitchenTask task) throws UseCaseLogicException {
-        if (task.isCompleted() || !task.isToDo()) {
-            throw new UseCaseLogicException();
-        }
+    public void deleteTask(KitchenTask task) {
         tasks.remove(task);
     }
 
